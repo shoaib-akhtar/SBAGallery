@@ -21,10 +21,10 @@ class GalleryViewModelImp: GalleryViewModel {
     var startingIndex: Int
     private var galleryViewModelsArray: Array <GalleryImageCollectionViewCellViewModel> = []
     var bgColor : UIColor
-    let placeHolder: String
+    let placeHolder: String?
     let imageLoaderBlock: imageLoaderClosue?
 
-    init(imagesArray: [Any], startingIndex: Int,bgColor: UIColor,placeHolder: String,imageLoaderBlock: imageLoaderClosue?) {
+    init(imagesArray: [Any], startingIndex: Int,bgColor: UIColor,placeHolder: String?,imageLoaderBlock: imageLoaderClosue?) {
         self.imagesArray = imagesArray
         self.startingIndex = startingIndex
         self.bgColor = bgColor

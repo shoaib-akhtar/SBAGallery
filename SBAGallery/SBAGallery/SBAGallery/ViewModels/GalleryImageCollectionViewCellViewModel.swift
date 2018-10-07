@@ -9,22 +9,22 @@
 import Foundation
 import UIKit
 
-typealias imageLoaderClosue = (_ url: URL,_ placeHolder: String,_ view:UIImageView) -> Void
+typealias imageLoaderClosue = (_ url: URL,_ placeHolder: String?,_ view:UIImageView) -> Void
 
 protocol GalleryImageCollectionViewCellViewModel {
     func image() -> Any
-    func getImagePlaceHolder() -> String
+    func getImagePlaceHolder() -> String?
     func isZoomEnable() -> Bool
-    func loadImage(url: URL,placeHolder: String,in view:UIImageView)
+    func loadImage(url: URL,placeHolder: String?,in view:UIImageView)
 }
 
 class GalleryImageCollectionViewCellViewModelImp: GalleryImageCollectionViewCellViewModel {
 
     var galleryImage: Any
-    let placeHolder : String
+    let placeHolder : String?
     let imageLoaderBlock: imageLoaderClosue?
 
-    init(imageName: Any,placeHolder: String,imageLoaderBlock: imageLoaderClosue?) {
+    init(imageName: Any,placeHolder: String?,imageLoaderBlock: imageLoaderClosue?) {
         self.galleryImage = imageName
         self.placeHolder = placeHolder
         self.imageLoaderBlock = imageLoaderBlock
@@ -34,7 +34,7 @@ class GalleryImageCollectionViewCellViewModelImp: GalleryImageCollectionViewCell
         return self.galleryImage
     }
     
-    func getImagePlaceHolder() -> String {
+    func getImagePlaceHolder() -> String? {
         return self.placeHolder
     }
 
@@ -43,7 +43,7 @@ class GalleryImageCollectionViewCellViewModelImp: GalleryImageCollectionViewCell
     }
     
     
-    func loadImage(url: URL, placeHolder: String, in view: UIImageView) {
+    func loadImage(url: URL, placeHolder: String?, in view: UIImageView) {
         if let block = self.imageLoaderBlock{
             block(url,placeHolder,view)
         }

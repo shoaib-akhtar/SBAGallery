@@ -12,12 +12,12 @@ import UIKit
 
 struct GalleryImageModel {
     let imagesArray : [Any]
-    let imagePlaceHolder : String
+    let imagePlaceHolder : String?
     let startingIndex : Int
     let bgColor : UIColor
     let imageLoaderBlock: imageLoaderClosue?
     
-    init(imagesArray: [Any],startingIndex : Int = 0,bgColor: UIColor = UIColor.black,placeHolder: String,imageLoaderBlock: imageLoaderClosue?)
+    init(imagesArray: [Any],startingIndex : Int = 0,bgColor: UIColor = UIColor.black,placeHolder: String?=nil,imageLoaderBlock: imageLoaderClosue?)
     {
         self.imagesArray = imagesArray
         self.startingIndex = startingIndex
@@ -29,7 +29,7 @@ struct GalleryImageModel {
 }
 
 class SBAGallery {
-    static func SBAGallery(galleryModel: GalleryImageModel) -> UIViewController{
+    static func gallery(galleryModel: GalleryImageModel) -> UIViewController{
         let storyBoard = UIStoryboard.init(name: "SBAGallery", bundle: nil)
         let vc : GalleryViewController = storyBoard.instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
         vc.viewModel =  GalleryViewModelImp(imagesArray: galleryModel.imagesArray, startingIndex: galleryModel.startingIndex, bgColor: galleryModel.bgColor,placeHolder: galleryModel.imagePlaceHolder ,imageLoaderBlock: galleryModel.imageLoaderBlock)

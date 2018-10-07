@@ -1,7 +1,7 @@
 import UIKit
-
+import Hero
 class GalleryViewController: UICollectionViewController {
-
+    
     var viewModel: GalleryViewModel!
     
     private var panGR = UIPanGestureRecognizer()
@@ -18,16 +18,14 @@ class GalleryViewController: UICollectionViewController {
         
         collectionView?.scrollToItem(at: IndexPath(item: viewModel.getStartingIndex(), section: 0), at: .right, animated: false)
         
-        
-//        panGR.addTarget(self, action: #selector(pan))
+        panGR.addTarget(self, action: #selector(pan))
         panGR.delegate = self
         collectionView?.addGestureRecognizer(panGR)
         
         
     }
     @IBAction func cancelButtonAction(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-//        hero.dismissViewController()
+        hero.dismissViewController()
     }
     
     override func viewWillLayoutSubviews() {
@@ -45,27 +43,27 @@ class GalleryViewController: UICollectionViewController {
     }
     
     
-//    @objc func pan() {
-//
-//        let translation = panGR.translation(in: nil)
-//        let progress = translation.y / 1 / collectionView!.bounds.height
-//        switch panGR.state {
-//        case .began:
-//            hero.dismissViewController()
-//        case .changed:
-//            Hero.shared.update(progress)
-//            if let cell = collectionView?.visibleCells[0]  as? GalleryImageCollectionViewCell {
-//                let currentPos = CGPoint(x: translation.x + view.center.x, y: translation.y + view.center.y)
-//                Hero.shared.apply(modifiers: [.position(currentPos)], to: cell.imageView)
-//            }
-//        default:
-//            if (progress + panGR.velocity(in: nil).y / collectionView!.bounds.height).magnitude > 0.2 {
-//                Hero.shared.finish()
-//            } else {
-//                Hero.shared.cancel()
-//            }
-//        }
-//    }
+    @objc func pan() {
+        
+        let translation = panGR.translation(in: nil)
+        let progress = translation.y / 1 / collectionView!.bounds.height
+        switch panGR.state {
+        case .began:
+            hero.dismissViewController()
+        case .changed:
+            Hero.shared.update(progress)
+            if let cell = collectionView?.visibleCells[0]  as? GalleryImageCollectionViewCell {
+                let currentPos = CGPoint(x: translation.x + view.center.x, y: translation.y + view.center.y)
+                Hero.shared.apply(modifiers: [.position(currentPos)], to: cell.imageView)
+            }
+        default:
+            if (progress + panGR.velocity(in: nil).y / collectionView!.bounds.height).magnitude > 0.2 {
+                Hero.shared.finish()
+            } else {
+                Hero.shared.cancel()
+            }
+        }
+    }
     private func addButton(){
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -74,7 +72,7 @@ class GalleryViewController: UICollectionViewController {
         self.view.addSubview(button)
         
         button.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
-        button.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16).isActive = true
+        button.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         button.addTarget(self, action: #selector(cancelButtonAction(_:)), for: .touchUpInside)
     }
     
@@ -84,8 +82,15 @@ class GalleryViewController: UICollectionViewController {
         pageControl = ISPageControl(frame: frame, numberOfPages: viewModel.numberOfImages())
         pageControl.inactiveTintColor = UIColor.gray
         pageControl.currentPageTintColor = UIColor.white
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+
         view.addSubview(pageControl)
+
         
+        pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+        pageControl.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        pageControl.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        pageControl.heightAnchor.constraint(equalToConstant: 35).isActive = true
         if !(viewModel.numberOfImages() > 1) {
             pageControl.isHidden = true
         }
@@ -100,18 +105,14 @@ extension GalleryViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let imageCell = GalleryImageCollectionViewCell.dequeue(collectionView: collectionView, indexPath: indexPath)
-        
-//        imageCell.indexPath = indexPath
         imageCell.viewModel = viewModel.viewModel(for: indexPath)
         imageCell.config()
         
-//        imageCell.imageView.hero.modifiers = [.position(CGPoint(x:view.bounds.width/2, y:view.bounds.height+view.bounds.width/2)), .scale(0.6), .fade]
+        imageCell.imageView.hero.modifiers = [.position(CGPoint(x:view.bounds.width/2, y:view.bounds.height+view.bounds.width/2)), .scale(0.6), .fade]
         imageCell.topInset = view.safeAreaInsets.top
         
         return imageCell
     }
-    
-    
     
 }
 
