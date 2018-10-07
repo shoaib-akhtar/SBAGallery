@@ -42,6 +42,9 @@ class GalleryViewController: UICollectionViewController {
         pageControl.currentPage = viewModel.getStartingIndex()
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
     
     @objc func pan() {
         

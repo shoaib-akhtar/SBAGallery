@@ -1,0 +1,6 @@
+framework module Pods_SBAGalleryUITests {
+  umbrella header "Pods-SBAGalleryUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
