@@ -5,7 +5,9 @@ class GalleryViewController: UICollectionViewController {
     var viewModel: GalleryViewModel!
     
     private var panGR = UIPanGestureRecognizer()
-    private  var pageControl : ISPageControl!
+    private  var pageControl : ISPageControl?
+    private  var cancelButton : UIButton?
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +24,8 @@ class GalleryViewController: UICollectionViewController {
         panGR.delegate = self
         collectionView?.addGestureRecognizer(panGR)
         
+
+
         
     }
     @IBAction func cancelButtonAction(_ sender: Any) {
@@ -34,12 +38,26 @@ class GalleryViewController: UICollectionViewController {
             v.topInset = view.safeAreaInsets.top
         }
     }
+
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        guard let flowLayout = collectionView?.collectionViewLayout as? UICollectionViewFlowLayout else {
+            return
+        }
+        
+        let cellSize =  size
+        flowLayout.itemSize = cellSize
+        flowLayout.invalidateLayout()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+            self.collectionView.scrollToItem(at: IndexPath(item: (self.pageControl?.currentPage)!, section: 0), at: .centeredHorizontally, animated: false)
+        }
+    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         addButton()
         addPageControl()
-        pageControl.currentPage = viewModel.getStartingIndex()
+        pageControl?.currentPage = viewModel.getStartingIndex()
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -68,34 +86,42 @@ class GalleryViewController: UICollectionViewController {
         }
     }
     private func addButton(){
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Close", for: UIControl.State.normal)
-        button.setTitleColor(UIColor.white, for: UIControl.State.normal)
-        self.view.addSubview(button)
         
-        button.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
-        button.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
-        button.addTarget(self, action: #selector(cancelButtonAction(_:)), for: .touchUpInside)
+        guard let _ = cancelButton else {
+            cancelButton = UIButton()
+            cancelButton?.translatesAutoresizingMaskIntoConstraints = false
+            cancelButton?.setTitle("Close", for: UIControl.State.normal)
+            cancelButton?.setTitleColor(UIColor.white, for: UIControl.State.normal)
+            self.view.addSubview(cancelButton!)
+            
+            cancelButton?.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
+            cancelButton?.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+            cancelButton?.addTarget(self, action: #selector(cancelButtonAction(_:)), for: .touchUpInside)
+            
+            return
+        }
+        
     }
     
     private func addPageControl(){
-        
-        let frame = CGRect(x: 20, y: view.frame.size.height-(10+35+view.safeAreaInsets.bottom), width: UIScreen.main.bounds.width-40, height: 35)
-        pageControl = ISPageControl(frame: frame, numberOfPages: viewModel.numberOfImages())
-        pageControl.inactiveTintColor = UIColor.gray
-        pageControl.currentPageTintColor = UIColor.white
-        pageControl.translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(pageControl)
-
-        
-        pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
-        pageControl.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        pageControl.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        pageControl.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        if !(viewModel.numberOfImages() > 1) {
-            pageControl.isHidden = true
+        guard let _ = pageControl else {
+            let frame = CGRect(x: 20, y: view.frame.size.height-(10+35+view.safeAreaInsets.bottom), width: UIScreen.main.bounds.width-40, height: 35)
+            pageControl = ISPageControl(frame: frame, numberOfPages: viewModel.numberOfImages())
+            pageControl?.inactiveTintColor = UIColor.gray
+            pageControl?.currentPageTintColor = UIColor.white
+            pageControl?.translatesAutoresizingMaskIntoConstraints = false
+            
+            view.addSubview(pageControl!)
+            
+            
+            pageControl?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+            pageControl?.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+            pageControl?.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+            pageControl?.heightAnchor.constraint(equalToConstant: 35).isActive = true
+            if !(viewModel.numberOfImages() > 1) {
+                pageControl!.isHidden = true
+            }
+            return
         }
     }
 }
@@ -124,12 +150,13 @@ extension GalleryViewController{
         let x = scrollView.contentOffset.x
         let w = scrollView.bounds.size.width
         let currentPage = Int(ceil(x/w))
-        self.pageControl.currentPage = currentPage
+        self.pageControl?.currentPage = currentPage
     }
 }
 
 extension GalleryViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         return view.bounds.size
     }
 }
