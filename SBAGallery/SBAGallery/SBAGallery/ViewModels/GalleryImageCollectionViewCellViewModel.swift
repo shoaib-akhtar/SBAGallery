@@ -16,6 +16,7 @@ protocol GalleryImageCollectionViewCellViewModel {
     func getImagePlaceHolder() -> String?
     func isZoomEnable() -> Bool
     func loadImage(url: URL,placeHolder: String?,in view:UIImageView)
+    func prefetch()
 }
 
 class GalleryImageCollectionViewCellViewModelImp: GalleryImageCollectionViewCellViewModel {
@@ -48,5 +49,12 @@ class GalleryImageCollectionViewCellViewModelImp: GalleryImageCollectionViewCell
             block(url,placeHolder,view)
         }
     }
-    
+    func prefetch() {
+        DispatchQueue.global().async {
+            if let image = self.galleryImage as? String{
+                // UIImage will be cached and UI wont stuck
+                _ = UIImage(named: image)
+            }
+        }
+    }
 }

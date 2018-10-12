@@ -29,6 +29,22 @@ class SBAGalleryUITests: XCTestCase {
     func testExample() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        flowCheck() 
+    }
+    
+    func flowCheck() {
+        let app = XCUIApplication()
+        app.buttons["Open gallery"].tap()
+        
+        let collectionViewsQuery = app.collectionViews
+        _ = collectionViewsQuery/*@START_MENU_TOKEN@*/.scrollViews.containing(.image, identifier:"1.jpg").element/*[[".cells.scrollViews.containing(.image, identifier:\"1.jpg\").element",".scrollViews.containing(.image, identifier:\"1.jpg\").element"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        
+        _ = collectionViewsQuery/*@START_MENU_TOKEN@*/.scrollViews.containing(.image, identifier:"2.jpg").element/*[[".cells.scrollViews.containing(.image, identifier:\"2.jpg\").element",".scrollViews.containing(.image, identifier:\"2.jpg\").element"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        
+        _ = collectionViewsQuery/*@START_MENU_TOKEN@*/.scrollViews.containing(.image, identifier:"3.jpg").element/*[[".cells.scrollViews.containing(.image, identifier:\"3.jpg\").element",".scrollViews.containing(.image, identifier:\"3.jpg\").element"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        XCUIDevice.shared.orientation = .landscapeLeft
+        XCUIDevice.shared.orientation = .portrait
+        app.buttons["Close"].tap()
     }
 
 }

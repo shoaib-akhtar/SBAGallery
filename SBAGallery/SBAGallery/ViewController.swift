@@ -17,7 +17,13 @@ class ViewController: UIViewController {
 
     @IBAction func openGallery(_ sender: Any) {
         
-        let galleryModel = GalleryImageModel(imagesArray:["1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg","1.jpg","2.jpg","3.jpg"]) { (url, placeHolder, imageView) in
+        var imageArray : [String] = []
+        
+        for i in 1...3{
+            imageArray.append("\(i).jpg")
+        }
+        
+        let galleryModel = GalleryImageModel(imagesArray:imageArray) { (url, placeHolder, imageView) in
             
         }
         

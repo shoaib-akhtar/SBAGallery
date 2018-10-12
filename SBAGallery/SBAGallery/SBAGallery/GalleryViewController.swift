@@ -11,7 +11,9 @@ class GalleryViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView?.backgroundColor = viewModel.getBackgorundColor()        
+        collectionView?.backgroundColor = viewModel.getBackgorundColor()
+        collectionView.prefetchDataSource = self
+        collectionView.isPrefetchingEnabled = true
         collectionView?.contentInsetAdjustmentBehavior = .never
         preferredContentSize = CGSize(width: view.bounds.width, height: view.bounds.width)
         
@@ -24,9 +26,11 @@ class GalleryViewController: UICollectionViewController {
         panGR.delegate = self
         collectionView?.addGestureRecognizer(panGR)
         
-
-
-        
+    }
+    
+    deinit {
+        self.collectionView = nil
+        self.viewModel = nil
     }
     @IBAction func cancelButtonAction(_ sender: Any) {
         hero.dismissViewController()
@@ -49,15 +53,20 @@ class GalleryViewController: UICollectionViewController {
         flowLayout.itemSize = cellSize
         flowLayout.invalidateLayout()
         
+        let pageNumber = self.pageControl?.currentPage
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
-            self.collectionView.scrollToItem(at: IndexPath(item: (self.pageControl?.currentPage)!, section: 0), at: .centeredHorizontally, animated: false)
+            self.collectionView.scrollToItem(at: IndexPath(item: pageNumber!, section: 0), at: .centeredHorizontally, animated: false)
+            self.pageControl?.removeFromSuperview()
+            self.pageControl = nil
+            self.addPageControl()
+            self.pageControl?.currentPage = pageNumber!
         }
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         addButton()
         addPageControl()
-        pageControl?.currentPage = viewModel.getStartingIndex()
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -105,22 +114,22 @@ class GalleryViewController: UICollectionViewController {
     
     private func addPageControl(){
         guard let _ = pageControl else {
-            let frame = CGRect(x: 20, y: view.frame.size.height-(10+35+view.safeAreaInsets.bottom), width: UIScreen.main.bounds.width-40, height: 35)
+            let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 35)
             pageControl = ISPageControl(frame: frame, numberOfPages: viewModel.numberOfImages())
             pageControl?.inactiveTintColor = UIColor.gray
             pageControl?.currentPageTintColor = UIColor.white
             pageControl?.translatesAutoresizingMaskIntoConstraints = false
             
             view.addSubview(pageControl!)
-            
-            
+
             pageControl?.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
-            pageControl?.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-            pageControl?.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+            pageControl?.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            pageControl?.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             pageControl?.heightAnchor.constraint(equalToConstant: 35).isActive = true
             if !(viewModel.numberOfImages() > 1) {
                 pageControl!.isHidden = true
             }
+            pageControl?.currentPage = viewModel.getStartingIndex()
             return
         }
     }
@@ -135,7 +144,6 @@ extension GalleryViewController {
         
         let imageCell = GalleryImageCollectionViewCell.dequeue(collectionView: collectionView, indexPath: indexPath)
         imageCell.viewModel = viewModel.viewModel(for: indexPath)
-        imageCell.config()
         
         imageCell.imageView.hero.modifiers = [.position(CGPoint(x:view.bounds.width/2, y:view.bounds.height+view.bounds.width/2)), .scale(0.6), .fade]
         imageCell.topInset = view.safeAreaInsets.top
@@ -143,17 +151,30 @@ extension GalleryViewController {
         return imageCell
     }
     
-}
-
-extension GalleryViewController{
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let x = scrollView.contentOffset.x
-        let w = scrollView.bounds.size.width
-        let currentPage = Int(ceil(x/w))
-        self.pageControl?.currentPage = currentPage
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if let cell = cell as? GalleryImageCollectionViewCell{
+            cell.config()
+        }
+        
+        self.pageControl?.currentPage = indexPath.row
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let cell = cell as? GalleryImageCollectionViewCell{
+            cell.imageView.image = nil
+        }
     }
 }
 
+extension  GalleryViewController : UICollectionViewDataSourcePrefetching{
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        for indexPath in indexPaths{
+            let model = viewModel.viewModel(for: indexPath)
+            model?.prefetch()
+        }
+    }
+}
 extension GalleryViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
