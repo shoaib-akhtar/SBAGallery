@@ -156,13 +156,17 @@ extension GalleryViewController {
         if let cell = cell as? GalleryImageCollectionViewCell{
             cell.config()
         }
-        
         self.pageControl?.currentPage = indexPath.row
     }
+    
     
     override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let cell = cell as? GalleryImageCollectionViewCell{
             cell.imageView.image = nil
+        }
+        
+        if let visibleIndexPath = collectionView.indexPathsForVisibleItems.first{
+            self.pageControl?.currentPage = visibleIndexPath.row
         }
     }
 }

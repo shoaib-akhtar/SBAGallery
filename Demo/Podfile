@@ -6,7 +6,7 @@ target 'SBAGallery' do
   use_frameworks!
 
   # Pods for SBAGallery
-    pod 'Hero', :git => 'https://github.com/HeroTransitions/Hero', :branch => 'swift-4.2'
+    pod 'Hero', '~> 1.4.0'
 
   target 'SBAGalleryTests' do
     inherit! :search_paths
