@@ -17,15 +17,10 @@ class ViewController: UIViewController {
     }
 
     @IBAction func openGallery(_ sender: Any) {
-        
-        var imageArray : [String] = []
-        
-        for i in 1...3{
-            imageArray.append("\(i).jpg")
-        }
-        
-        let galleryModel = GalleryImageModel(imagesArray:imageArray) { (url, placeHolder, imageView) in
+    
+        let galleryModel = GalleryImageModel(imagesArray: ["0.jpg","1.jpg","2.jpg","3.jpg"]) { (url, placeHolder, imageView) in
             
+            // Try loading with your image cahced library
         }
         
         let viewController = SBAGallery.gallery(galleryModel: galleryModel)

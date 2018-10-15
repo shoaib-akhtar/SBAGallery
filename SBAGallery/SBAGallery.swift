@@ -30,7 +30,7 @@ public struct GalleryImageModel {
 
 public class SBAGallery {
     public static func gallery(galleryModel: GalleryImageModel) -> UIViewController{
-        let storyBoard = UIStoryboard.init(name: "SBAGallery", bundle: nil)
+        let storyBoard = UIStoryboard.init(name: "SBAGallery", bundle: Bundle.init(for: self))
         let vc : GalleryViewController = storyBoard.instantiateViewController(withIdentifier: "GalleryViewController") as! GalleryViewController
         vc.viewModel =  GalleryViewModelImp(imagesArray: galleryModel.imagesArray, startingIndex: galleryModel.startingIndex, bgColor: galleryModel.bgColor,placeHolder: galleryModel.imagePlaceHolder ,imageLoaderBlock: galleryModel.imageLoaderBlock)
         return vc

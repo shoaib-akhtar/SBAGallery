@@ -17,7 +17,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SBAGallery:
-    :commit: 70f8bddd665a72c2b63cb0c183dd79182632877b
+    :commit: 7264754ce29adf5d174fa0b45022f938c8bd92af
     :git: https://github.com/shoaib-akhtar/SBAGallery
 
 SPEC CHECKSUMS:
