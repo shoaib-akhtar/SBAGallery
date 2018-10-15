@@ -1,16 +1,29 @@
 PODS:
   - Hero (1.4.0)
+  - SBAGallery (1.0):
+    - Hero (= 1.4.0)
 
 DEPENDENCIES:
-  - Hero (~> 1.4.0)
+  - SBAGallery (from `https://github.com/shoaib-akhtar/SBAGallery`, branch `master`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Hero
 
+EXTERNAL SOURCES:
+  SBAGallery:
+    :branch: master
+    :git: https://github.com/shoaib-akhtar/SBAGallery
+
+CHECKOUT OPTIONS:
+  SBAGallery:
+    :commit: 70f8bddd665a72c2b63cb0c183dd79182632877b
+    :git: https://github.com/shoaib-akhtar/SBAGallery
+
 SPEC CHECKSUMS:
   Hero: bac92350d7201a1a940003e0767c7b52ce7c99a1
+  SBAGallery: 99c9c18453fad09034f29dc8fb25773594aafc26
 
-PODFILE CHECKSUM: b6525a4734d8d8ee9c79e46c2ab1a315a8007c2c
+PODFILE CHECKSUM: fd300222acebd27e4e607311ac9fd4c4be59c907
 
 COCOAPODS: 1.5.3
