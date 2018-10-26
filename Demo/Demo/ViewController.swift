@@ -8,7 +8,7 @@
 
 import UIKit
 import SBAGallery
-
+import Kingfisher
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -18,13 +18,24 @@ class ViewController: UIViewController {
 
     @IBAction func openGallery(_ sender: Any) {
     
-        let galleryModel = GalleryImageModel(imagesArray: ["0.jpg","1.jpg","2.jpg","3.jpg"]) { (url, placeHolder, imageView) in
+        let galleryModel =  GalleryImageModel(imagesArray: ["https://placehold.it/300x300&text=image1","https://placehold.it/500x1500&text=Demo","1.jpg","2.jpg","3.jpg"],placeHolder: "placeholder.jpg", imageLoaderBlock: {(url, placeHolderImage, imageView) in
             
             // Try loading with your image cahced library
+            var image : UIImage? = nil
+            if let placeHolder = placeHolderImage{
+             image = UIImage(named: placeHolder)
+            }
+            imageView.kf.setImage(with: url, placeholder: image)
+            
+        }) { (urlArray) in
+            // Try pre loading for better performance
+            let prefetcher = ImagePrefetcher(urls: urlArray, completionHandler: { (skippedResources, failedResources, completedResources) in
+                
+            })
+            prefetcher.start()
         }
         
         let viewController = SBAGallery.gallery(galleryModel: galleryModel)
-        
         self.present(viewController, animated: true, completion: nil)
     }
 

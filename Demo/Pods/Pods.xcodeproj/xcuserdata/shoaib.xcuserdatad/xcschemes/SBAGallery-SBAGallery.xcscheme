@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "875D53E570EE91A5EB587C27A0FD2402"
+               BlueprintIdentifier = "A21040238FE7DA6EC6FF5199D6BEAFBE"
                BuildableName = "SBAGallery.bundle"
                BlueprintName = "SBAGallery-SBAGallery"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "875D53E570EE91A5EB587C27A0FD2402"
+            BlueprintIdentifier = "A21040238FE7DA6EC6FF5199D6BEAFBE"
             BuildableName = "SBAGallery.bundle"
             BlueprintName = "SBAGallery-SBAGallery"
             ReferencedContainer = "container:Pods.xcodeproj">

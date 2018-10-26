@@ -9,8 +9,6 @@
 import Foundation
 import UIKit
 
-public typealias imageLoaderClosue = (_ url: URL,_ placeHolder: String?,_ view:UIImageView) -> Void
-
 protocol GalleryImageCollectionViewCellViewModel {
     func image() -> Any
     func getImagePlaceHolder() -> String?
@@ -23,12 +21,14 @@ class GalleryImageCollectionViewCellViewModelImp: GalleryImageCollectionViewCell
 
     var galleryImage: Any
     let placeHolder : String?
-    let imageLoaderBlock: imageLoaderClosue?
+    let imageLoaderBlock: imageLoaderClosure?
+    let imagePreloadBlock: imagePreloadClosure?
 
-    init(imageName: Any,placeHolder: String?,imageLoaderBlock: imageLoaderClosue?) {
+    init(imageName: Any,placeHolder: String?,imageLoaderBlock: imageLoaderClosure?,imagePreloadBlock: imagePreloadClosure?) {
         self.galleryImage = imageName
         self.placeHolder = placeHolder
         self.imageLoaderBlock = imageLoaderBlock
+        self.imagePreloadBlock = imagePreloadBlock
     }
     
     func image() -> Any {
@@ -53,7 +53,17 @@ class GalleryImageCollectionViewCellViewModelImp: GalleryImageCollectionViewCell
         DispatchQueue.global().async {
             if let image = self.galleryImage as? String{
                 // UIImage will be cached and UI wont stuck
-                _ = UIImage(named: image)
+                if let uiImage = UIImage(named: image){
+                    print("image preloaded \(uiImage.size)")
+                }else if let imageURL = image.url(){
+                    if let block = self.imagePreloadBlock{
+                        block([imageURL])
+                    }
+                }
+            } else if let image =  self.galleryImage as? URL {
+                if let block = self.imagePreloadBlock{
+                    block([image])
+                }
             }
         }
     }

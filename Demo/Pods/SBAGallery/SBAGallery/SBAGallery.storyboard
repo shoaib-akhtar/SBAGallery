@@ -12,8 +12,8 @@
         <!--Gallery View Controller-->
         <scene sceneID="4FH-8M-1GE">
             <objects>
-                <collectionViewController storyboardIdentifier="GalleryViewController" id="t4r-oL-6bW" customClass="GalleryViewController" customModule="MyStuff" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="428-Lu-Vml">
+                <collectionViewController storyboardIdentifier="GalleryViewController" automaticallyAdjustsScrollViewInsets="NO" id="t4r-oL-6bW" customClass="GalleryViewController" customModule="SBAGallery" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" id="428-Lu-Vml">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -24,7 +24,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="GalleryImageCollectionViewCell" id="huO-u8-WMw" customClass="GalleryImageCollectionViewCell" customModule="MyStuff" customModuleProvider="target">
+                            <collectionViewCell clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="GalleryImageCollectionViewCell" id="huO-u8-WMw" customClass="GalleryImageCollectionViewCell" customModule="SBAGallery" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="217" height="196"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">

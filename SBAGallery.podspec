@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "SBAGallery"
   s.version      = "1.0"
-  s.summary      = "Easy to use gallery controller"
+  s.summary      = "SBAGallery is a fullscreen image gallery with support for local and remote images with feature like zooming and panning."
   s.homepage     = "https://github.com/shoaib-akhtar/SBAGallery"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Shoaib Akhtar" => "shoaib.akhtar1@live.com" }

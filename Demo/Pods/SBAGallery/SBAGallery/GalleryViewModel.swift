@@ -22,20 +22,22 @@ class GalleryViewModelImp: GalleryViewModel {
     private var galleryViewModelsArray: Array <GalleryImageCollectionViewCellViewModel> = []
     var bgColor : UIColor
     let placeHolder: String?
-    let imageLoaderBlock: imageLoaderClosue?
+    let imageLoaderBlock: imageLoaderClosure?
+    let imagePreloadBlock: imagePreloadClosure?
 
-    init(imagesArray: [Any], startingIndex: Int,bgColor: UIColor,placeHolder: String?,imageLoaderBlock: imageLoaderClosue?) {
+    init(imagesArray: [Any], startingIndex: Int,bgColor: UIColor,placeHolder: String?,imageLoaderBlock: imageLoaderClosure?,imagePreloaderBlock: imagePreloadClosure?) {
         self.imagesArray = imagesArray
         self.startingIndex = startingIndex
         self.bgColor = bgColor
         self.imageLoaderBlock = imageLoaderBlock
         self.placeHolder = placeHolder
+        self.imagePreloadBlock = imagePreloaderBlock
         generateViewModels()
     }
     
     func generateViewModels() {
         for image in imagesArray {
-            let vm = GalleryImageCollectionViewCellViewModelImp(imageName: image,placeHolder: self.placeHolder ,imageLoaderBlock: self.imageLoaderBlock)
+            let vm = GalleryImageCollectionViewCellViewModelImp(imageName: image,placeHolder: self.placeHolder ,imageLoaderBlock: self.imageLoaderBlock,imagePreloadBlock: self.imagePreloadBlock)
             galleryViewModelsArray.append(vm)
         }
     }

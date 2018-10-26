@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7741BF19DC22A50E4D3955B806088E21"
+               BlueprintIdentifier = "0CE805BEE91FA2DB46CB721E94CF6030"
                BlueprintName = "SBAGallery"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "SBAGallery.framework">

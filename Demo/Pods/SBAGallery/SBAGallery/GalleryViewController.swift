@@ -36,6 +36,7 @@ class GalleryViewController: UICollectionViewController {
         hero.dismissViewController()
     }
     
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         for v in (collectionView!.visibleCells as? [GalleryImageCollectionViewCell])! {
@@ -82,10 +83,6 @@ class GalleryViewController: UICollectionViewController {
             hero.dismissViewController()
         case .changed:
             Hero.shared.update(progress)
-            if let cell = collectionView?.visibleCells[0]  as? GalleryImageCollectionViewCell {
-                let currentPos = CGPoint(x: translation.x + view.center.x, y: translation.y + view.center.y)
-                Hero.shared.apply(modifiers: [.position(currentPos)], to: cell.imageView)
-            }
         default:
             if (progress + panGR.velocity(in: nil).y / collectionView!.bounds.height).magnitude > 0.2 {
                 Hero.shared.finish()
@@ -103,8 +100,8 @@ class GalleryViewController: UICollectionViewController {
             cancelButton?.setTitleColor(UIColor.white, for: UIControl.State.normal)
             self.view.addSubview(cancelButton!)
             
-            cancelButton?.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 8).isActive = true
-            cancelButton?.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
+            cancelButton?.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20).isActive = true
+            cancelButton?.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
             cancelButton?.addTarget(self, action: #selector(cancelButtonAction(_:)), for: .touchUpInside)
             
             return
@@ -144,9 +141,10 @@ extension GalleryViewController {
         
         let imageCell = GalleryImageCollectionViewCell.dequeue(collectionView: collectionView, indexPath: indexPath)
         imageCell.viewModel = viewModel.viewModel(for: indexPath)
-        
+
         imageCell.imageView.hero.modifiers = [.position(CGPoint(x:view.bounds.width/2, y:view.bounds.height+view.bounds.width/2)), .scale(0.6), .fade]
         imageCell.topInset = view.safeAreaInsets.top
+        
         
         return imageCell
     }
@@ -181,7 +179,6 @@ extension  GalleryViewController : UICollectionViewDataSourcePrefetching{
 }
 extension GalleryViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         return view.bounds.size
     }
 }
@@ -194,5 +191,9 @@ extension GalleryViewController:UIGestureRecognizerDelegate {
             return v.y > abs(v.x)
         }
         return false
+    }
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool{
+        
+        return true
     }
 }

@@ -1,14 +1,17 @@
 PODS:
   - Hero (1.4.0)
+  - Kingfisher (4.10.0)
   - SBAGallery (1.0):
     - Hero (= 1.4.0)
 
 DEPENDENCIES:
+  - Kingfisher
   - SBAGallery (from `https://github.com/shoaib-akhtar/SBAGallery`, branch `master`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Hero
+    - Kingfisher
 
 EXTERNAL SOURCES:
   SBAGallery:
@@ -17,13 +20,14 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SBAGallery:
-    :commit: 7264754ce29adf5d174fa0b45022f938c8bd92af
+    :commit: 6b8d6160471a60bcafdb8f81f1f6734d1c2b9543
     :git: https://github.com/shoaib-akhtar/SBAGallery
 
 SPEC CHECKSUMS:
   Hero: bac92350d7201a1a940003e0767c7b52ce7c99a1
+  Kingfisher: 43c4b802d8b5256cf1f4379e9cd10b329be6d3e2
   SBAGallery: 99c9c18453fad09034f29dc8fb25773594aafc26
 
-PODFILE CHECKSUM: fd300222acebd27e4e607311ac9fd4c4be59c907
+PODFILE CHECKSUM: 40c6da4cc34ba231a3aebeb1b1c4e5fd6be0b663
 
 COCOAPODS: 1.5.3
