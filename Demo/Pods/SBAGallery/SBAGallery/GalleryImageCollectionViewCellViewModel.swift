@@ -53,8 +53,8 @@ class GalleryImageCollectionViewCellViewModelImp: GalleryImageCollectionViewCell
         DispatchQueue.global().async {
             if let image = self.galleryImage as? String{
                 // UIImage will be cached and UI wont stuck
-                if let uiImage = UIImage(named: image){
-                    print("image preloaded \(uiImage.size)")
+                if let _ = UIImage(named: image){
+                    //
                 }else if let imageURL = image.url(){
                     if let block = self.imagePreloadBlock{
                         block([imageURL])

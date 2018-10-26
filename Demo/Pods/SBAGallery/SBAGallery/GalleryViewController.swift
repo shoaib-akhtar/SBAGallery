@@ -27,7 +27,10 @@ class GalleryViewController: UICollectionViewController {
         collectionView?.addGestureRecognizer(panGR)
         
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.reloadData()
+    }
     deinit {
         self.collectionView = nil
         self.viewModel = nil
@@ -36,12 +39,13 @@ class GalleryViewController: UICollectionViewController {
         hero.dismissViewController()
     }
     
-    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+    }
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        for v in (collectionView!.visibleCells as? [GalleryImageCollectionViewCell])! {
-            v.topInset = view.safeAreaInsets.top
-        }
+
     }
 
     
@@ -143,8 +147,6 @@ extension GalleryViewController {
         imageCell.viewModel = viewModel.viewModel(for: indexPath)
 
         imageCell.imageView.hero.modifiers = [.position(CGPoint(x:view.bounds.width/2, y:view.bounds.height+view.bounds.width/2)), .scale(0.6), .fade]
-        imageCell.topInset = view.safeAreaInsets.top
-        
         
         return imageCell
     }

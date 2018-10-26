@@ -21,11 +21,7 @@ class ViewController: UIViewController {
         let galleryModel =  GalleryImageModel(imagesArray: ["https://placehold.it/300x300&text=image1","https://placehold.it/500x1500&text=Demo","1.jpg","2.jpg","3.jpg"],placeHolder: "placeholder.jpg", imageLoaderBlock: {(url, placeHolderImage, imageView) in
             
             // Try loading with your image cahced library
-            var image : UIImage? = nil
-            if let placeHolder = placeHolderImage{
-             image = UIImage(named: placeHolder)
-            }
-            imageView.kf.setImage(with: url, placeholder: image)
+            imageView.kf.setImage(with: url)
             
         }) { (urlArray) in
             // Try pre loading for better performance

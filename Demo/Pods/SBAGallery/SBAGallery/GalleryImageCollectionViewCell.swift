@@ -7,11 +7,6 @@ class GalleryImageCollectionViewCell: UICollectionViewCell,DequeueInitializable 
     var viewModel : GalleryImageCollectionViewCellViewModel!
     private var overlay : UIView?
     
-    var topInset: CGFloat = 0 {
-        didSet {
-            centerIfNeeded()
-        }
-    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -30,12 +25,13 @@ class GalleryImageCollectionViewCell: UICollectionViewCell,DequeueInitializable 
         dTapGR.numberOfTapsRequired = 2
         addGestureRecognizer(dTapGR)
         
+        
     }
     
     func config() {
 
         scrollView.setZoomScale(1, animated: false)
-
+        
         if !viewModel.isZoomEnable(){
             scrollView.maximumZoomScale = 1
         }
@@ -86,15 +82,14 @@ class GalleryImageCollectionViewCell: UICollectionViewCell,DequeueInitializable 
     }
     
     fileprivate func frameSetting() {
-        let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         
+        let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         scrollView.frame = rect
         
         imageView.frame = rect
         
         scrollView.contentSize = rect.size
         
-        centerIfNeeded()
     }
     
     override func layoutSubviews() {
@@ -109,20 +104,6 @@ class GalleryImageCollectionViewCell: UICollectionViewCell,DequeueInitializable 
     
     }
     
-    func centerIfNeeded() {
-        var inset = UIEdgeInsets(top: topInset, left: 0, bottom: 0, right: 0)
-        if scrollView.contentSize.height < scrollView.bounds.height - topInset {
-            let insetV = (scrollView.bounds.height - topInset - scrollView.contentSize.height)/2
-            inset.top += insetV
-            inset.bottom = insetV
-        }
-        if scrollView.contentSize.width < scrollView.bounds.width {
-            let insetV = (scrollView.bounds.width - scrollView.contentSize.width)/2
-            inset.left = insetV
-            inset.right = insetV
-        }
-        scrollView.contentInset = inset
-    }
 }
 
 extension GalleryImageCollectionViewCell: UIScrollViewDelegate {
@@ -130,7 +111,4 @@ extension GalleryImageCollectionViewCell: UIScrollViewDelegate {
         return imageView
     }
     
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        centerIfNeeded()
-    }
 }
