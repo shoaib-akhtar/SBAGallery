@@ -1,6 +1,0 @@
-framework module SBAGallery {
-  umbrella header "SBAGallery-umbrella.h"
-
-  export *
-  module * { export * }
-}
