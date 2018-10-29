@@ -7,17 +7,12 @@ class GalleryImageCollectionViewCell: UICollectionViewCell,DequeueInitializable 
     var viewModel : GalleryImageCollectionViewCellViewModel!
     private var overlay : UIView?
     
-    var topInset: CGFloat = 0 {
-        didSet {
-            centerIfNeeded()
-        }
-    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         scrollView = UIScrollView(frame: bounds)
         imageView = UIImageView(frame: bounds)
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         scrollView.addSubview(imageView)
         scrollView.maximumZoomScale = 5
         scrollView.delegate = self
@@ -30,15 +25,18 @@ class GalleryImageCollectionViewCell: UICollectionViewCell,DequeueInitializable 
         dTapGR.numberOfTapsRequired = 2
         addGestureRecognizer(dTapGR)
         
+        
     }
     
     func config() {
+
+        scrollView.setZoomScale(1, animated: false)
         
         if !viewModel.isZoomEnable(){
             scrollView.maximumZoomScale = 1
         }
         
-        //        imageView.hero.id = viewModel.getAnimationId()
+        // imageView.hero.id = viewModel.getAnimationId()
         imageView.isOpaque = true
         
         
@@ -46,27 +44,22 @@ class GalleryImageCollectionViewCell: UICollectionViewCell,DequeueInitializable 
         if let uimage = img as? UIImage{
             imageView.image = uimage
         } else if let imgUrl = img as? URL {
-            self.viewModel.loadImage(url: imgUrl, placeHolder: viewModel.getImagePlaceHolder(), in: imageView)
+            DispatchQueue.main.async {
+                self.viewModel.loadImage(url: imgUrl, placeHolder: self.viewModel.getImagePlaceHolder(), in: self.imageView)
+            }
         } else if let imageName = img as? String {
             
-//            DispatchQueue.global().async {
-            
                 if let img = UIImage(named: imageName){
-//                    DispatchQueue.main.async {
                         self.imageView.image = img
                         
-//                    }
                 } else {
                     if let imgUrl = imageName.url() {
-//                        DispatchQueue.main.async {
+                        DispatchQueue.main.async {
                             self.viewModel.loadImage(url: imgUrl, placeHolder: self.viewModel.getImagePlaceHolder(), in: self.imageView)
-//                        }
-                        
+                        }
                     }
                 }
-//            }
         }
-        
         
     }
     
@@ -88,44 +81,29 @@ class GalleryImageCollectionViewCell: UICollectionViewCell,DequeueInitializable 
         }
     }
     
+    fileprivate func frameSetting() {
+        
+        let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        scrollView.frame = rect
+        
+        imageView.frame = rect
+        
+        scrollView.contentSize = rect.size
+        
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
-        scrollView.frame = bounds
-        let size: CGSize
-        if let image = imageView.image {
-            let containerSize = CGSize(width: bounds.width, height: bounds.height - topInset)
-            if containerSize.width / containerSize.height < image.size.width / image.size.height {
-                size = CGSize(width: containerSize.width, height: containerSize.width * image.size.height / image.size.width )
-            } else {
-                size = CGSize(width: containerSize.height * image.size.width / image.size.height, height: containerSize.height )
-            }
-        } else {
-            size = CGSize(width: bounds.width, height: bounds.width)
-        }
-        imageView.frame = CGRect(origin: .zero, size: size)
-        scrollView.contentSize = size
-        centerIfNeeded()
+        
+        frameSetting()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         scrollView.setZoomScale(1, animated: false)
+    
     }
     
-    func centerIfNeeded() {
-        var inset = UIEdgeInsets(top: topInset, left: 0, bottom: 0, right: 0)
-        if scrollView.contentSize.height < scrollView.bounds.height - topInset {
-            let insetV = (scrollView.bounds.height - topInset - scrollView.contentSize.height)/2
-            inset.top += insetV
-            inset.bottom = insetV
-        }
-        if scrollView.contentSize.width < scrollView.bounds.width {
-            let insetV = (scrollView.bounds.width - scrollView.contentSize.width)/2
-            inset.left = insetV
-            inset.right = insetV
-        }
-        scrollView.contentInset = inset
-    }
 }
 
 extension GalleryImageCollectionViewCell: UIScrollViewDelegate {
@@ -133,7 +111,4 @@ extension GalleryImageCollectionViewCell: UIScrollViewDelegate {
         return imageView
     }
     
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        centerIfNeeded()
-    }
 }
