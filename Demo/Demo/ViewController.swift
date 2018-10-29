@@ -18,8 +18,9 @@ class ViewController: UIViewController {
 
     @IBAction func openGallery(_ sender: Any) {
     
-        let galleryModel =  GalleryImageModel(imagesArray: ["https://placehold.it/300x300&text=image1","https://placehold.it/500x1500&text=Demo","1.jpg","2.jpg","3.jpg"],placeHolder: "placeholder.jpg", imageLoaderBlock: {(url, placeHolderImage, imageView) in
-            
+        let mixImageArray = ["https://placehold.it/300x300&text=image1","https://placehold.it/500x1500&text=Demo","1.jpg","2.jpg","3.jpg"]
+        let galleryModel =  GalleryImageModel(imagesArray: mixImageArray,placeHolder: "placeholder.jpg", imageLoaderBlock: {(url, placeHolderImage, imageView) in
+        
             // Try loading with your image cahced library
             imageView.kf.setImage(with: url)
             
